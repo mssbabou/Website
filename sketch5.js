@@ -25,7 +25,7 @@ function draw() {
   arm_width = slider_Width.value();
   distance_Center = slider_Distance.value();
   color = slider_color.value();
-  background(255);
+  background(60);
   stroke(color, 255, 255);
   fill(color, 255, 255);
   // RIGHT
