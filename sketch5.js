@@ -8,10 +8,10 @@ let center = false;
 
 function setup() {
   createCanvas(600, 600);
-  slider_Length = createSlider(0, 200, 50);
-  slider_Width = createSlider(0, 200, 2);
-  slider_Distance = createSlider(0, 200, 30);
-  slider_color = createSlider(0, 255, 0);
+  slider_Length = createSlider(0, 400, 50);
+  slider_Width = createSlider(0, 400, 2);
+  slider_Distance = createSlider(0, 400, 30);
+  slider_color = createSlider(0, 250, 0);
   slider_color.style('width', '200px');
 
   slider_Center = createCheckbox('Center', false);
