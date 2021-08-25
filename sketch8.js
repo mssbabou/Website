@@ -34,6 +34,16 @@ function BubbleSort() {
   }
 }
 
+function InsertionSort() {
+  let swapCount = 0;
+  for (let a = 0; a < numbers.length; a++) {
+    
+    for (let b = a; b > numbers.length; b--) {
+      console.log(a);
+    }
+  }
+}
+
 function SwapIndex(index1, index2) {
   let temp1;
   let temp2;
@@ -53,6 +63,6 @@ function drawBoxses() {
 
 function keyPressed() {
   if(key == " "){
-    BubbleSort();
+    InsertionSort();
   }
 }

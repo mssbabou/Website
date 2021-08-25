@@ -2,7 +2,7 @@ class Vector2{
   constructor(x, y){
     this.x = x;
     this.y = y;
-  } 
+  } /
 }
 
 class Ball{
@@ -34,6 +34,7 @@ let startVelocity = new Vector2(10, 5);
 let paddle0 = new Paddle(startPaddlePos, StartPaddleSpeed, startPaddleLength, 0);
 let paddle1 = new Paddle(startPaddlePos, StartPaddleSpeed, startPaddleLength, 0);
 let ball = new Ball(startPosition, startVelocity);
+let ball1 = new Ball(new Vector2(500, 500), new Vector2(0, 0));
 
 function angle(vec1, vec2)
 {
@@ -46,9 +47,6 @@ function angle(vec1, vec2)
 }
 function setup() {
   createCanvas(width, height);
-  let a = new Vector2(10, 10);
-  let b = new Vector2(20, 20);
-  console.log(MoveTowards(b, a, 1));
 }
 
 function UpdateBall() {
@@ -83,15 +81,6 @@ function UpdateBall() {
   ball.position.y += ball.velocity.y;
 }
 
-function MoveTowards(currentPos, targetPos, speed) {
-  let finalPos = new Vector2();
-  let diffX = (targetPos.x - currentPos.x);
-  let diffY = (targetPos.y - currentPos.y) / (targetPos.y - currentPos.y);
-  diffX = diffX - (diffX - 1);
-
-  return diffX;
-}
-
 function ResetGame() {
   let randomY = random(-10, 10);
   let randomX = floor(random(0, 2));
@@ -104,10 +93,58 @@ function ResetGame() {
   ball.position = new Vector2(width / 2, height / 2);
 }
 
+function MoveTowards(currentPos, targetPos, speed) {
+  let diffX = targetPos.x - currentPos.x;
+  let diffY = targetPos.y - currentPos.y;
+  
+  textSize(20);
+  text("Diff = " + diffX + " | " + diffY, 50, 50);
+  console.log(diffX + " " + diffY);
+
+  let vectorX = diffX == 0 || diffY == 0 ? (diffX < 0? -1 : 1) : diffX / MinFrom0(diffX, diffY);
+  let vectorY = diffX == 0 || diffY == 0 ? (diffY < 0? -1 : 1) : diffY / MinFrom0(diffX, diffY);
+
+  text("Vector = " + vectorX + " | " + vectorY, 50, 90);
+
+  diffX = diffX < speed && diffX > -speed? 0 : (diffX < 0? -1 : 1);
+  diffY = diffY < speed && diffY > -speed? 0 : (diffY < 0? -1 : 1);
+
+  vectorX = vectorX * diffX;
+  vectorY = vectorY * diffY;
+
+  text("New Vector = " + vectorX + " | " + vectorY, 50, 130);
+  text("Diff = " + diffX + " | " + diffY, 50, 170);
+  text("Pos = " + currentPos.x + " | " + currentPos.y, 50, 210);
+  console.log(vectorX + " " + vectorY + " | " + diffX + " " + diffY + " | " + currentPos.x + " " + currentPos.y);
+
+  return new Vector2(currentPos.x + vectorX * speed, currentPos.y + vectorY * speed);
+}
+
+function MinFrom0(value0, value1) {
+  if (value0 == 0 || value1 == 0){
+    return 1;
+  }else if (value0 < 0 && value0 < value1){
+    return value1;
+  }else if (value1 < 0 && value1 < value0){
+    return value0;
+  }else if(value0 < value1){
+    return value0;
+  }else if(value1 <= value1){
+    return value1;
+  }
+}
+
 function DrawPlayer() {
   stroke(255);
   fill(255);
+  //ball1.position = MoveTowards(ball1.position, new Vector2(mouseX, mouseY), 1);
+  //circle(ball.position.x, ball.position.y, startBallRadius);
   circle(ball.position.x, ball.position.y, startBallRadius);
+}
+
+function mousePressed() {
+  ball1.position = Vector2.MoveTowards(ball1.position, ball.position, 1);
+  console.log(MoveTowards(ball1.position, new Vector2(10, 400), 1));
 }
 
 function DrawPaddle() {
@@ -123,11 +160,16 @@ function draw() {
   }else if(keyIsDown(83) && (paddle0.position + paddle0.length) < height){
     paddle0.position += paddle0.speed;
   }
+  /*
   if(keyIsDown(38) && paddle1.position > 0){
     paddle1.position -= paddle1.speed;
   } else if (keyIsDown(40) && (paddle1.position  + paddle1.length) < height){
     paddle1.position += paddle1.speed;
   }
+  */
+  //console.log(ball.position.y);
+  //console.log(paddle1.position);
+  //paddle1.position = Vector2.MoveTowards(new Vector2(1, paddle1.position), new Vector2(1, ball.position.y), 1).y;
   background(60);
   UpdateBall();
   DrawPlayer();
